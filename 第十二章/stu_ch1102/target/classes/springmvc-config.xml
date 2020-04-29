@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	   http://www.springframework.org/schema/context
+  http://www.springframework.org/schema/context/spring-context-4.3.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <context:component-scan base-package="ch11"/>
+    <mvc:annotation-driven />
+    <!-- 配置处理器Handle，映射“/firstController”请求 -->
+<!--    <bean name="/firstController"-->
+<!--          class="ch11.FirstController" />-->
+<!--    &lt;!&ndash; 处理器映射器，将处理器Handle的name作为url进行查找 &ndash;&gt;-->
+<!--    <bean class=-->
+<!--                  "org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />-->
+    <!-- 处理器适配器，配置对处理器中handleRequest()方法的调用-->
+    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
+    <!-- 视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+</beans>
