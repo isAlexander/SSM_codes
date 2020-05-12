@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ch09.OrdersMapper">
+    <!-- 多对多嵌套查询：通过执行另外一条SQL映射语句来返回预期的特殊类型 -->
+    <select id="findOrdersByuserId" parameterType="Integer"
+            resultType="com.ch09.Orders">
+		select * from orders WHERE user_id=#{userId}
+	</select>
+
+
+</mapper>

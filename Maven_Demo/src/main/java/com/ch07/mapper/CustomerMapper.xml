@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace表示命名空间 -->
+<mapper namespace="com.ch07.mappers.CustomerMapper">
+
+
+    <!-- 对于不支持自动生成主键的数据库，或取消自主增长规则的数据库可以自定义主键生成规则 -->
+    <insert id="insertCustomer" parameterType="com.ch07.Customer" keyProperty="id" useGeneratedKeys="true">
+        insert into t_customer(id,username,jobs,phone)
+        values(#{id},#{username},#{jobs},#{phone})
+    </insert>
+
+
+    <select id="findCustomerByNameAndJobs" parameterType="com.ch07.Customer" resultType="com.ch07.Customer">
+        select * from t_customer
+        <trim prefixOverrides="and" prefix="WHERE">
+            <if test="username !=null and username !='' ">
+                and username like concat('%',#{username},'%')
+            </if>
+            <if test="jobs !=null and jobs !='' ">
+                and jobs= #{jobs}
+            </if>
+        </trim>
+
+    </select>
+
+
+    <select id="findCustomerByNameOrJobs" parameterType="com.ch07.Customer" resultType="com.ch07.Customer">
+        select * from t_customer where 1=1
+        <choose>
+            <when test="username != null and username !=''">
+                and username like  '%${value}%'
+            </when>
+
+            <when test="jobs !=null and jobs !='' ">
+                and jobs= #{jobs}
+            </when>
+
+            <otherwise>
+                and phone is not null
+            </otherwise>
+        </choose>
+    </select>
+
+
+    <!-- <set>元素 -->
+    <update id="updateCustomer" parameterType="com.ch07.Customer">
+        update t_customer
+        <trim prefix="set" suffixOverrides=",">
+            <if test="username !=null and username !=''">
+                username=#{username},
+            </if>
+            <if test="jobs !=null and jobs !=''">
+                jobs=#{jobs},
+            </if>
+            <if test="phone !=null and phone !=''">
+                phone=#{phone},
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <!--<foreach>元素使用 -->
+    <select id="findCustomerByIds" parameterType="List"
+            resultType="com.ch07.Customer">
+        select * from t_customer where id in
+        <foreach item="id" index="index" collection="ids" open="("
+                 separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>
